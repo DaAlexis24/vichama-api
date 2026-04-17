@@ -1,4 +1,10 @@
 import express from "express";
+import debug from "debug";
+import { env } from "./config/env.ts";
+
+const log = debug(`${env.PROJECT_NAME}:index`);
+log("Starting app...");
+
 const app = express();
 const port = 3000;
 
