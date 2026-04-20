@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { HttpError } from './errors/http-error.ts';
 import { apiController } from './controllers/api.controller.ts';
+import { errorHandler } from './middleware/error-handler.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -33,6 +34,8 @@ export const createApp = () => {
         const error = new HttpError(404, 'Not Found', 'Resource not found');
         next(error);
     });
+
+    app.use(errorHandler);
 
     return app;
 };
