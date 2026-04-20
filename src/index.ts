@@ -1,17 +1,35 @@
-import express from "express";
-import debug from "debug";
-import { env } from "./config/env.ts";
+import debug from 'debug';
+import { createServer } from 'node:http';
+import { createApp } from './app.ts';
+import { env } from './config/env.ts';
 
 const log = debug(`${env.PROJECT_NAME}:index`);
-log("Starting app...");
+log('Starting API Server...');
 
-const app = express();
-const port = 3000;
+const port = env.PORT || 3000;
+const app = createApp();
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
+const server = createServer(app);
+log('Rising server successfully!');
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+const listenManager = () => {
+    const addr = server.address();
+    if (addr === null) return;
+    let bind;
+    if (typeof addr === 'string') {
+        bind = 'pipe ' + addr;
+    } else {
+        bind =
+            addr.address === '::'
+                ? `http://localhost:${addr?.port}`
+                : `${addr.address}:${addr?.port}`;
+    }
+    if (env.NODE_ENV !== 'dev') {
+        console.log(`Server listening on ${bind}`);
+    } else {
+        log(`Servidor escuchando en ${bind}`);
+    }
+};
+
+server.on('listening', listenManager);
+server.listen(port);
