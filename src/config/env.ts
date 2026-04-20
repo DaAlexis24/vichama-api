@@ -1,15 +1,16 @@
-import * as z from 'zod';
-import { ZodError } from 'zod';
+import * as z from "zod";
+import { ZodError } from "zod";
 
 const EnvSchema = z.object({
-  NODE_ENV: z.enum(['dev', 'prod', 'test']).default('dev'),
-  DEBUG: z.string().optional(),
-  PROJECT_NAME: z.string(),
-  PGUSER: z.string(),
-  PGPASSWORD: z.string(),
-  PGHOST: z.string(),
-  PGPORT: z.coerce.number(),
-  PGDATABASE: z.string(),
+    PORT: z.coerce.number(),
+    NODE_ENV: z.enum(["dev", "prod", "test"]).default("dev"),
+    DEBUG: z.string().optional(),
+    PROJECT_NAME: z.string(),
+    PGUSER: z.string(),
+    PGPASSWORD: z.string(),
+    PGHOST: z.string(),
+    PGPORT: z.coerce.number(),
+    PGDATABASE: z.string(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -17,8 +18,8 @@ export type Env = z.infer<typeof EnvSchema>;
 export let env: Env;
 
 try {
-  env = EnvSchema.parse(process.env); // throw Error
+    env = EnvSchema.parse(process.env); // throw Error
 } catch (error) {
-  console.log(error as ZodError);
-  process.exit(1);
+    console.log(error as ZodError);
+    process.exit(1);
 }
