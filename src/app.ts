@@ -4,6 +4,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { HttpError } from './errors/http-error.ts';
+import { apiController } from './controllers/api.controller.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -17,6 +18,8 @@ export const createApp = () => {
     app.use(express.json());
     app.use(express.urlencoded());
     app.use(express.static('public'));
+
+    app.get('/api', apiController);
 
     app.get('/health', (_req, res) => {
         return res.json({
