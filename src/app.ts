@@ -6,6 +6,7 @@ import cors from 'cors';
 import { HttpError } from './errors/http-error.ts';
 import { apiController } from './controllers/api.controller.ts';
 import { errorHandler } from './middleware/error-handler.ts';
+import { customHeaders } from './middleware/custom.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -18,6 +19,7 @@ export const createApp = () => {
     app.use(cors({ origin: '*' }));
     app.use(express.json());
     app.use(express.urlencoded());
+    app.use(customHeaders(env.PROJECT_NAME));
     app.use(express.static('public'));
 
     app.get('/api', apiController);
