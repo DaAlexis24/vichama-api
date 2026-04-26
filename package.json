@@ -9,7 +9,7 @@
     "scripts": {
         "start": "node ./src/index.ts",
         "dev": "node --watch --env-file=.env ./src/index.ts",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "node --env-file=.env.test --test",
         "seed:test": "node --env-file=.env.test ./src/songs/entities/test-seed-song.ts"
     },
     "dependencies": {
