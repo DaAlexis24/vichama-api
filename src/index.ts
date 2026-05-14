@@ -2,12 +2,14 @@ import debug from 'debug';
 import { createServer } from 'node:http';
 import { createApp } from './app.ts';
 import { env } from './config/env.ts';
+import { connectDB } from './config/db.ts';
 
 const log = debug(`${env.PROJECT_NAME}:index`);
 log('Starting API Server...');
 
+const pool = await connectDB();
 const port = env.PORT || 3000;
-const app = createApp();
+const app = createApp(pool);
 
 const server = createServer(app);
 log('Rising server successfully!');

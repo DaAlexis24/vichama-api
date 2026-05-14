@@ -2,7 +2,11 @@ import { Router } from 'express';
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { SongsController } from '../controllers/songs.controller.ts';
-import { validateBody, validateId } from '../../middleware/validations.ts';
+import {
+    validateBody,
+    validateId,
+    validateSearch,
+} from '../../middleware/validations.ts';
 import {
     SongCreateSchema,
     SongUpdateSchema,
@@ -25,7 +29,7 @@ export class SongsRouter {
         );
         this._router.get(
             '/search/:title',
-            validateId(),
+            validateSearch(),
             this.controller.getSongByTitle.bind(this.controller),
         );
         this._router.post(

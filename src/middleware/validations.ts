@@ -11,19 +11,42 @@ log('Loading validation middleware...');
 export const validateId = (
     schema: ZodObject = z.object({ id: z.coerce.number().int().positive() }),
 ) => {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
         log('Validating ID...');
         const { id } = req.params;
         if (!id) {
             const error = new HttpError(
                 400,
                 'Bad Request',
-                'Animal ID is required',
+                'Request ID is required',
             );
             next(error);
         }
         try {
             schema.parse({ id });
+            next();
+        } catch (error) {
+            next(error);
+        }
+    };
+};
+
+export const validateSearch = (
+    schema: ZodObject = z.object({ title: z.coerce.string() }),
+) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        log('Validating query...');
+        const { title } = req.params;
+        if (!title) {
+            const error = new HttpError(
+                400,
+                'Bad Request',
+                'Request Query is required',
+            );
+            next(error);
+        }
+        try {
+            schema.parse({ title });
             next();
         } catch (error) {
             next(error);

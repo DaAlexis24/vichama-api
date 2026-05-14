@@ -26,23 +26,15 @@ export class SongsRepo {
         return rows as Song[];
     }
 
-    async readSongByTitle(title: string): Promise<Song> {
-        log(`Reading song with title ${title} from DB`);
+    async readSongByTitle(title: string): Promise<Song[]> {
+        log(`Reading songs with title containing ${title} from DB`);
         const q = `
-            SELECT id, title, artist, duration_seconds, image_url AS "image", audio_url AS "audio", created_at, updated_at FROM songs WHERE title = $1
+            SELECT id, title, artist, duration_seconds, image_url AS "image", audio_url AS "audio", created_at, updated_at FROM songs WHERE title ILIKE '%' || $1 || '%'
         `;
 
         const { rows } = await this.pool.query<Song>(q, [title]);
 
-        if (rows.length === 0) {
-            throw new SqlError(`Song with title ${title} not found`, {
-                code: 'NOT_FOUND',
-                sqlState: 'READ_FAILED',
-                sqlMessage: `No song found with title ${title}`,
-            });
-        }
-
-        return rows[0] as Song;
+        return rows as Song[];
     }
 
     async createSong(song: SongCreateDTO): Promise<Song> {
