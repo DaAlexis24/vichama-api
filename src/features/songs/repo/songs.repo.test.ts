@@ -1,9 +1,9 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { connectDB } from '../../config/db.ts';
+import { connectDB } from '../../../config/db.ts';
 import { SongsRepo } from './songs.repo.ts';
 import { seedSongsTestDB, type SeedData } from '../entities/test-seed-song.ts';
-import type { SqlError } from '../../errors/sql-error.ts';
+import type { SqlError } from '../../../errors/sql-error.ts';
 import type { SongCreateDTO } from '../entities/song.entities.ts';
 
 const songMock: SongCreateDTO = {

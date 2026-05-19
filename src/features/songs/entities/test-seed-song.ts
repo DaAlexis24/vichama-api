@@ -1,7 +1,7 @@
 import type { Pool } from 'pg';
-import { env } from '../../config/env.ts';
+import { env } from '../../../config/env.ts';
 import debug from 'debug';
-import { connectDB } from '../../config/db.ts';
+import { connectDB } from '../../../config/db.ts';
 import { fileURLToPath } from 'node:url';
 
 const log = debug(`${env.PROJECT_NAME}:seed:test`);

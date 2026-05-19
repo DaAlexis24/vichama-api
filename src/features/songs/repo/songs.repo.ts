@@ -1,6 +1,6 @@
 import debug from 'debug';
-import { env } from '../../config/env.ts';
-import { SqlError } from '../../errors/sql-error.ts';
+import { env } from '../../../config/env.ts';
+import { SqlError } from '../../../errors/sql-error.ts';
 import type { Pool } from 'pg';
 import type {
     Song,

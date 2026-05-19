@@ -1,13 +1,13 @@
 import debug from 'debug';
-import { env } from '../../config/env.ts';
+import { env } from '../../../config/env.ts';
 import type { NextFunction, Response, Request } from 'express';
 import type { SongsRepo } from '../repo/songs.repo.ts';
 import type {
     SongCreateDTO,
     SongUpdateDTO,
 } from '../entities/song.entities.ts';
-import { HttpError } from '../../errors/http-error.ts';
-import { SqlError } from '../../errors/sql-error.ts';
+import { HttpError } from '../../../errors/http-error.ts';
+import { SqlError } from '../../../errors/sql-error.ts';
 
 const log = debug(`${env.PROJECT_NAME}:controller:songs`);
 log('Starting songs controller...');

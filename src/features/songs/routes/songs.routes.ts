@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { env } from '../../config/env.ts';
+import { env } from '../../../config/env.ts';
 import debug from 'debug';
 import type { SongsController } from '../controllers/songs.controller.ts';
 import {
     validateBody,
     validateId,
     validateSearch,
-} from '../../middleware/validations.ts';
+} from '../../../middleware/validations.ts';
 import {
     SongCreateSchema,
     SongUpdateSchema,

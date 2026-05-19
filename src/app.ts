@@ -7,10 +7,10 @@ import { HttpError } from './errors/http-error.ts';
 import { apiController } from './controllers/api.controller.ts';
 import { errorHandler } from './middleware/error-handler.ts';
 import { customHeaders } from './middleware/custom.ts';
-import { SongsRepo } from './songs/repo/songs.repo.ts';
+import { SongsRepo } from './features/songs/repo/songs.repo.ts';
 import type { Pool } from 'pg';
-import { SongsController } from './songs/controllers/songs.controller.ts';
-import { SongsRouter } from './songs/routes/songs.routes.ts';
+import { SongsController } from './features/songs/controllers/songs.controller.ts';
+import { SongsRouter } from './features/songs/routes/songs.routes.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
