@@ -7,33 +7,33 @@ import type {
     Song,
     UpdateSongDTO,
 } from '../entities/song.entities.ts';
-import { HttpError } from '../../../errors/http-error.ts';
-import { SqlError } from '../../../errors/sql-error.ts';
+import {
+    InternalServerError,
+    NotFoundError,
+} from '../../../errors/http-error.ts';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 const log = debug(`${env.PROJECT_NAME}:controller:songs`);
 log('Starting songs controller...');
 
 export class SongsController {
-    private repo: SongsRepo;
+    #repo: SongsRepo;
     constructor(repo: SongsRepo) {
-        this.repo = repo;
+        this.#repo = repo;
     }
 
     async getAllSongs(_req: Request, res: Response, next: NextFunction) {
-        log('Getting all songs from repo...');
         try {
-            const songs = await this.repo.getAllSongs();
-            res.json(songs);
+            log('Getting all songs from repo...');
+            const songs: Song[] = await this.#repo.getAllSongs();
+            return res.json(songs);
         } catch (error) {
-            log('Error occurred while fetching songs');
-            const httpError = new HttpError(
-                500,
-                'Internal Server Error',
-                'An error occurred while fetching songs',
+            const internalError = new InternalServerError(
+                'Failed to get all films',
                 { cause: error },
             );
-            next(httpError);
+            log('Error getting all songs: %s', internalError.message);
+            next(internalError);
         }
     }
 
@@ -41,30 +41,26 @@ export class SongsController {
         try {
             const id = String(req.params.id);
             log('Get Song: %s', id);
-            const song: Song = await this.repo.getSongByID(id);
+            const song: Song = await this.#repo.getSongByID(id);
             return res.json(song);
         } catch (error) {
             if (
                 error instanceof PrismaClientKnownRequestError &&
                 error.code === 'P2025'
             ) {
-                const httpError = new HttpError(
-                    404,
-                    'Not Found',
-                    'Song not found',
+                const notFoundError = new NotFoundError(
+                    'Song requested not found',
                     { cause: error },
                 );
-                next(httpError);
-                return;
+                log('Error getting song by ID: %s', notFoundError.message);
+                return next(notFoundError);
             }
-            log('Error occurred while fetching song.');
-            const httpError = new HttpError(
-                500,
-                'Internal Server Error',
-                'An error occurred while getting song',
+            const internalError = new InternalServerError(
+                'Failed to get song by id',
                 { cause: error },
             );
-            next(httpError);
+            log('Error getting song by id: %s', internalError.message);
+            return next(internalError);
         }
     }
 
@@ -97,82 +93,75 @@ export class SongsController {
     // }
 
     async createSong(req: Request, res: Response, next: NextFunction) {
-        log('Creating new song in repo...');
         try {
             const songData = req.body as CreateSongDTO;
             log('Creating song: %O', songData);
             // body Validado por el middleware de validación
-            const newSong = await this.repo.createSong(songData);
+            const newSong: Song = await this.#repo.createSong(songData);
             return res.status(201).json(newSong);
         } catch (error) {
-            log('Error occurred while creating song.');
-            const httpError = new HttpError(
-                500,
-                'Internal Server Error',
-                'An error occurred while creating song',
+            const internalError = new InternalServerError(
+                'Failed to create song',
                 { cause: error },
             );
-            next(httpError);
+            log('Error creating song: %s', internalError.message);
+            internalError.cause = error;
+            return next(internalError);
         }
     }
 
     async updateSong(req: Request, res: Response, next: NextFunction) {
-        const id = String(req.params.id);
-        log(`Updating song with id ${id} in repository...`);
         try {
+            const id = String(req.params.id);
+            log(`Updating song with ID: %0`, id);
             const songData = req.body as UpdateSongDTO;
-            const song = await this.repo.updateSong(id, songData);
+            const song: Song = await this.#repo.updateSong(id, songData);
             res.json(song);
         } catch (error) {
-            log('Error occurred while updating song.');
-            if (error instanceof SqlError && error.code === 'NOT_FOUND') {
-                const httpError = new HttpError(
-                    404,
-                    'Not Found',
-                    'Song not found',
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
+                const notFoundError = new NotFoundError(
+                    'Song for updating not found',
                     { cause: error },
                 );
-                next(httpError);
-                return;
+                log('Error updating song: %s', notFoundError.message);
+                return next(notFoundError);
             }
-            log('Error occurred while fetching song.');
-            const httpError = new HttpError(
-                500,
-                'Internal Server Error',
-                'An error occurred while updating song',
+            const internalError = new InternalServerError(
+                'Failed to updated song',
                 { cause: error },
             );
-            next(httpError);
+            log('Error updating song: %s', internalError.message);
+            return next(internalError);
         }
     }
 
     async deleteSong(req: Request, res: Response, next: NextFunction) {
-        const id = String(req.params.id);
-        // id Validado por el middleware de validación
-        log(`Deleting song with id ${id} from repository...`);
         try {
-            await this.repo.deleteSong(id);
-            res.status(204).send();
-        } catch (error: unknown) {
-            log('Error occurred while deleting song.');
-            if (error instanceof SqlError && error.code === 'NOT_FOUND') {
-                res.status(404);
-                const httpError = new HttpError(
-                    404,
-                    'Not Found',
-                    'Song not found',
+            const id = String(req.params.id);
+            log(`Deleting song with ID: %O`, id);
+            await this.#repo.deleteSong(id);
+            return res.status(204).send();
+        } catch (error) {
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
+                const notFoundError = new NotFoundError(
+                    'Song for deletion not found',
                     { cause: error },
                 );
-                next(httpError);
-                return;
+                log('Error deleting song: %s', notFoundError.message);
+                return next(notFoundError);
             }
-            const httpError = new HttpError(
-                500,
-                'Internal Server Error',
-                'An error occurred while deleting song',
+            const internalError = new InternalServerError(
+                'Failed to delete song',
                 { cause: error },
             );
-            next(httpError);
+            log('Error deleting song: %s', internalError.message);
+            return next(internalError);
         }
     }
 }
