@@ -7,41 +7,39 @@ datasource db {
   provider = "postgresql"
 }
 
-model playlist_songs {
-  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  playlist_id String    @db.Uuid
-  song_id     String    @db.Uuid
-  position    Int
-  added_at    DateTime? @default(now()) @db.Timestamp(6)
-  playlists   playlists @relation(fields: [playlist_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  songs       songs     @relation(fields: [song_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+model PlaylistSong {
+  playlist    Playlist @relation(fields: [playlist_id], references: [id], onDelete: Cascade)
+  playlist_id String
 
-  @@unique([playlist_id, song_id])
-  @@index([playlist_id], map: "idx_playlist_songs_playlist_id")
-  @@index([song_id], map: "idx_playlist_songs_song_id")
+  song        Song     @relation(fields: [song_id], references: [id], onDelete: Cascade)
+  song_id     String
+
+  added_at    DateTime @default(now()) // Fecha en que se agregó la canción a la playlist
+
+  @@id([playlist_id, song_id]) // Clave primaria compuesta
+  @@map("playlist_songs")
 }
 
-model playlists {
-  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+model Playlist {
+  id         String   @id @default(uuid())
   name           String           @db.VarChar(255)
   description    String?
-  created_at     DateTime?        @default(now()) @db.Timestamp(6)
-  updated_at     DateTime?        @default(now()) @db.Timestamp(6)
-  playlist_songs playlist_songs[]
+  created_at       DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0) @ignore
+  updated_at     DateTime        @updatedAt @ignore
+  songs PlaylistSong[]
 
-  @@index([created_at], map: "idx_playlists_created_at")
-  @@index([name], map: "idx_playlists_name")
+    @@map("playlists")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model songs {
-  id               String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+model Song {
+  id         String   @id @default(uuid())
   title            String           @db.VarChar(255)
   artist           String           @db.VarChar(255)
-  duration_seconds Int
   image_url        String           @db.VarChar(500)
   audio_url        String           @db.VarChar(500)
-  created_at       DateTime?        @default(now()) @db.Timestamp(6)
-  updated_at       DateTime?        @default(now()) @db.Timestamp(6)
-  playlist_songs   playlist_songs[]
+  created_at       DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0) @ignore
+  updated_at       DateTime        @updatedAt @ignore
+  playlist PlaylistSong[]
+
+  @@map("songs")
 }
