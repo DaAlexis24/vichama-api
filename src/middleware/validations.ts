@@ -9,7 +9,7 @@ const log = debug(`${env.PROJECT_NAME}:middleware:validations`);
 log('Loading validation middleware...');
 
 export const validateId = (
-    schema: ZodObject = z.object({ id: z.coerce.number().int().positive() }),
+    schema: ZodObject = z.object({ id: z.coerce.string() }),
 ) => {
     return (req: Request, _res: Response, next: NextFunction) => {
         log('Validating ID...');

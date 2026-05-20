@@ -33,13 +33,13 @@ model Playlist {
 
 model Song {
   id         String   @id @default(uuid())
-  title            String           @db.VarChar(255)
-  artist           String           @db.VarChar(255)
-  image_url        String           @db.VarChar(500)
-  audio_url        String           @db.VarChar(500)
-  created_at       DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0) @ignore
-  updated_at       DateTime        @updatedAt @ignore
-  playlist PlaylistSong[]
+  title      String   @db.VarChar(255)
+  artist     String   @db.VarChar(255)
+  image_url  String   @db.VarChar(500)
+  audio_url  String   @db.VarChar(500)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  playlist   PlaylistSong[]
 
   @@map("songs")
 }
