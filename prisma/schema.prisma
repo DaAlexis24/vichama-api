@@ -24,8 +24,8 @@ model Playlist {
   id         String   @id @default(uuid())
   name           String           @db.VarChar(255)
   description    String?
-  created_at       DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0) @ignore
-  updated_at     DateTime        @updatedAt @ignore
+  created_at       DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
   songs PlaylistSong[]
 
     @@map("playlists")
