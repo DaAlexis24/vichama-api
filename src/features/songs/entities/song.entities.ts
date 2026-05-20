@@ -26,7 +26,7 @@ export const CreateSongSchema = z.object({
     audio_url: urlSchema,
 });
 
-export const UpdateSongSchema = SongSchema.partial().omit({ id: true });
+export const UpdateSongSchema = CreateSongSchema.partial();
 
 export type Song = z.infer<typeof SongSchema>;
 export type CreateSongDTO = z.infer<typeof CreateSongSchema>;
