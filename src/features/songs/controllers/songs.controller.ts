@@ -3,8 +3,8 @@ import { env } from '../../../config/env.ts';
 import type { NextFunction, Response, Request } from 'express';
 import type { SongsRepo } from '../repo/songs.repo.ts';
 import type {
-    SongCreateDTO,
-    SongUpdateDTO,
+    CreateSongDTO,
+    UpdateSongDTO,
 } from '../entities/song.entities.ts';
 import { HttpError } from '../../../errors/http-error.ts';
 import { SqlError } from '../../../errors/sql-error.ts';
@@ -21,7 +21,7 @@ export class SongsController {
     async getAllSongs(_req: Request, res: Response, next: NextFunction) {
         log('Getting all songs from repo...');
         try {
-            const songs = await this.repo.readAllSongs();
+            const songs = await this.repo.getAllSongs();
             res.json(songs);
         } catch (error) {
             log('Error occurred while fetching songs');
@@ -66,7 +66,7 @@ export class SongsController {
     async createSong(req: Request, res: Response, next: NextFunction) {
         log('Creating new song in repo...');
         try {
-            const songData = req.body as SongCreateDTO;
+            const songData = req.body as CreateSongDTO;
             // body Validado por el middleware de validación
             const song = await this.repo.createSong(songData);
             res.status(201).json(song);
@@ -86,7 +86,7 @@ export class SongsController {
         const id = String(req.params.id);
         log(`Updating song with id ${id} in repository...`);
         try {
-            const songData = req.body as SongUpdateDTO;
+            const songData = req.body as UpdateSongDTO;
             const song = await this.repo.updateSong(id, songData);
             res.json(song);
         } catch (error) {

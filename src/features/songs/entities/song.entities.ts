@@ -22,8 +22,8 @@ export const CreateSongSchema = z.object({
         .string()
         .min(1, { message: 'El artista es obligatorio' })
         .max(255),
-    image: urlSchema,
-    audio: urlSchema,
+    image_url: urlSchema,
+    audio_url: urlSchema,
 });
 
 export const UpdateSongSchema = SongSchema.partial().omit({ id: true });

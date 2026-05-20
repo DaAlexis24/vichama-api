@@ -1,29 +1,26 @@
 import debug from 'debug';
+import { PrismaClient } from '../../../../generated/prisma/client.ts';
 import { env } from '../../../config/env.ts';
 import { SqlError } from '../../../errors/sql-error.ts';
-import type { Pool } from 'pg';
 import type {
     Song,
-    SongCreateDTO,
-    SongUpdateDTO,
+    CreateSongDTO,
+    UpdateSongDTO,
 } from '../entities/song.entities.ts';
 
 const log = debug(`${env.PROJECT_NAME}:repo:songs`);
 log('Loading Songs Repo...');
 
 export class SongsRepo {
-    private pool: Pool;
-    constructor(pool: Pool) {
+    #prisma: PrismaClient;
+    constructor(prisma: PrismaClient) {
         log('Starting Songs Repo!');
-        this.pool = pool;
+        this.#prisma = prisma;
     }
 
-    async readAllSongs() {
+    async getAllSongs(): Promise<Song[]> {
         log('Read all songs for DB 📖');
-        const { rows } = await this.pool.query<Song>(`
-                SELECT id, title, artist, duration_seconds, image_url, audio_url, created_at, updated_at FROM songs;
-            `);
-        return rows as Song[];
+        return (await this.#prisma.song.findMany()) as Song[];
     }
 
     async readSongByTitle(title: string): Promise<Song[]> {
@@ -37,7 +34,7 @@ export class SongsRepo {
         return rows as Song[];
     }
 
-    async createSong(song: SongCreateDTO): Promise<Song> {
+    async createSong(song: CreateSongDTO): Promise<Song> {
         log(`Creating a song with title is ${song.title}`);
         const q = `
             INSERT INTO songs (title, artist, duration_seconds, image_url, audio_url) 
@@ -47,14 +44,13 @@ export class SongsRepo {
         const { rows } = await this.pool.query<Song>(q, [
             song.title,
             song.artist,
-            song.duration_seconds,
             song.image_url,
             song.audio_url,
         ]);
         return rows[0] as Song;
     }
 
-    async updateSong(id: string, songData: SongUpdateDTO): Promise<Song> {
+    async updateSong(id: string, songData: UpdateSongDTO): Promise<Song> {
         log(`Updating song with id ${id}....`);
         const q = `
             UPDATE songs
@@ -77,7 +73,6 @@ export class SongsRepo {
             id,
             songData.title,
             songData.artist,
-            songData.duration_seconds,
             songData.image_url,
             songData.audio_url,
         ]);

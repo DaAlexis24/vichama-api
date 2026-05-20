@@ -8,8 +8,8 @@ import {
     validateSearch,
 } from '../../../middleware/validations.ts';
 import {
-    SongCreateSchema,
-    SongUpdateSchema,
+    CreateSongSchema,
+    UpdateSongSchema,
 } from '../entities/song.entities.ts';
 
 const log = debug(`${env.PROJECT_NAME}:router:song`);
@@ -34,13 +34,13 @@ export class SongsRouter {
         );
         this._router.post(
             '/',
-            validateBody(SongCreateSchema),
+            validateBody(CreateSongSchema),
             this.controller.createSong.bind(this.controller),
         );
         this._router.patch(
             '/:id',
             validateId(),
-            validateBody(SongUpdateSchema),
+            validateBody(UpdateSongSchema),
             this.controller.updateSong.bind(this.controller),
         );
         this._router.delete(
