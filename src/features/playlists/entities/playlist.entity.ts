@@ -32,6 +32,6 @@ export const PlaylistWithSongsSchema = PlaylistSchema.extend({
 });
 
 export type Playlist = z.infer<typeof PlaylistSchema>;
-export type CreatePlaylistInput = z.infer<typeof CreatePlaylistSchema>;
-export type UpdatePlaylistInput = z.infer<typeof UpdatePlaylistSchema>;
+export type CreatePlaylistDTO = z.infer<typeof CreatePlaylistSchema>;
+export type UpdatePlaylistDTO = z.infer<typeof UpdatePlaylistSchema>;
 export type PlaylistWithSongs = z.infer<typeof PlaylistWithSongsSchema>;

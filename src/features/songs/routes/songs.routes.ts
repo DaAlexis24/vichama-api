@@ -15,7 +15,7 @@ export class SongsRouter {
     #router: Router;
     #controller: SongsController;
     constructor(controller: SongsController) {
-        log('Starting animal router...');
+        log('Starting songs router...');
         this.#controller = controller;
         this.#router = Router();
 
