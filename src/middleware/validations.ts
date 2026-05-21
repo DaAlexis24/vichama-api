@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env.ts';
 import debug from 'debug';
 import z, { type ZodObject } from 'zod';
-import { HttpError } from '../errors/http-error.ts';
+import { BadRequestError } from '../errors/http-error.ts';
 
 const log = debug(`${env.PROJECT_NAME}:middleware:validations`);
 
@@ -14,45 +14,42 @@ export const validateId = (
     return (req: Request, _res: Response, next: NextFunction) => {
         log('Validating ID...');
         const { id } = req.params;
-        if (!id) {
-            const error = new HttpError(
-                400,
-                'Bad Request',
-                'Request ID is required',
-            );
-            next(error);
-        }
         try {
             schema.parse({ id });
-            next();
+            log('ID validated successfully!');
+            return next();
         } catch (error) {
-            next(error);
+            const idDetail = JSON.stringify({ id });
+            const idError = new BadRequestError(`Invalid ID: ${idDetail}`, {
+                cause: error,
+            });
+            return next(idError);
         }
     };
 };
 
-export const validateSearch = (
-    schema: ZodObject = z.object({ title: z.coerce.string() }),
-) => {
-    return (req: Request, _res: Response, next: NextFunction) => {
-        log('Validating query...');
-        const { title } = req.params;
-        if (!title) {
-            const error = new HttpError(
-                400,
-                'Bad Request',
-                'Request Query is required',
-            );
-            next(error);
-        }
-        try {
-            schema.parse({ title });
-            next();
-        } catch (error) {
-            next(error);
-        }
-    };
-};
+// export const validateSearch = (
+//     schema: ZodObject = z.object({ title: z.coerce.string() }),
+// ) => {
+//     return (req: Request, _res: Response, next: NextFunction) => {
+//         log('Validating query...');
+//         const { title } = req.params;
+//         if (!title) {
+//             const error = new HttpError(
+//                 400,
+//                 'Bad Request',
+//                 'Request Query is required',
+//             );
+//             next(error);
+//         }
+//         try {
+//             schema.parse({ title });
+//             next();
+//         } catch (error) {
+//             next(error);
+//         }
+//     };
+// };
 
 export const validateBody = (schema: ZodObject) => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -62,9 +59,13 @@ export const validateBody = (schema: ZodObject) => {
             // Actualiza el body de la solicitud con los datos validados
             // incluyendo posibles transformaciones realizadas por Zod
             req.body = validationResult;
-            next();
+            log('Body was validated successfully!');
+            return next();
         } catch (error) {
-            next(error);
+            const bodyError = new BadRequestError(`Invalid Request Body`, {
+                cause: error,
+            });
+            return next(bodyError);
         }
     };
 };
