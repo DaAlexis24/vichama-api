@@ -29,7 +29,7 @@ export class SongsController {
             return res.json(songs);
         } catch (error) {
             const internalError = new InternalServerError(
-                'Failed to get all films',
+                'Failed to get all songs',
                 { cause: error },
             );
             log('Error getting all songs: %s', internalError.message);
