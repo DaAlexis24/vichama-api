@@ -7,9 +7,9 @@ import { connectDB } from './config/db.ts';
 const log = debug(`${env.PROJECT_NAME}:index`);
 log('Starting API Server...');
 
-const pool = await connectDB();
+const prisma = await connectDB();
 const port = env.PORT || 3000;
-const app = createApp(pool);
+const app = createApp(prisma);
 
 const server = createServer(app);
 log('Rising server successfully!');
