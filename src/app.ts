@@ -12,6 +12,9 @@ import { SongsController } from './features/songs/controllers/songs.controller.t
 import { SongsRouter } from './features/songs/routes/songs.routes.ts';
 import type { PrismaClient } from '../generated/prisma/client.ts';
 import { FeatureImage } from './features/features.ts';
+import { PlaylistRepo } from './features/playlists/repo/playlist.repo.ts';
+import { PlaylistController } from './features/playlists/controllers/playlists.controller.ts';
+import { PlaylistRouter } from './features/playlists/routes/playlists.routes.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -42,7 +45,16 @@ export const createApp = (prisma: PrismaClient) => {
         SongsController,
         SongsRouter,
     );
+
+    const playlistFeature = new FeatureImage(
+        prisma,
+        PlaylistRepo,
+        PlaylistController,
+        PlaylistRouter,
+    );
+
     app.use('/api/songs', songFeature.router);
+    app.use('/api/playlists', playlistFeature.router);
 
     app.use((_req, _res, next) => {
         log('Calling errorHandler for 404 error');
