@@ -1,24 +1,20 @@
 import type { PrismaClient } from '../../generated/prisma/client.ts';
 import { env } from '../config/env.ts';
 import debug from 'debug';
-import type { Router as ExpressRouter } from 'express';
+import type { Router } from 'express';
+import type {
+    ControllerConstructor,
+    RepoConstructor,
+    RouterConstructor,
+} from './entities/features.entity.ts';
 
 const log = debug(`${env.PROJECT_NAME}:features`);
 log('Loading features...');
 
-type RepoConstructor<TRepo> = new (prisma: PrismaClient) => TRepo;
-type ControllerConstructor<TController, TRepo> = new (
-    repo: TRepo,
-) => TController;
-type RouterConstructor<
-    TRouter extends { router: ExpressRouter },
-    TController,
-> = new (controller: TController) => TRouter;
-
 export class FeatureImage<
     TRepo,
     TController,
-    TRouter extends { router: ExpressRouter },
+    TRouter extends { router: Router },
 > {
     #repo: TRepo;
     #controller: TController;

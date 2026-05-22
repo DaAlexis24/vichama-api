@@ -1,5 +1,5 @@
 import z from 'zod';
-import { env } from '../config/env.ts';
+import { env } from '../../config/env.ts';
 import debug from 'debug';
 
 const log = debug(`${env.PROJECT_NAME}:entity:index`);

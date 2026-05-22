@@ -1,7 +1,7 @@
 import z from 'zod';
 import { env } from '../../../config/env.ts';
 import debug from 'debug';
-import { uuidSchema } from '../../index.entity.ts';
+import { uuidSchema } from '../../entities/index.entity.ts';
 
 const log = debug(`${env.PROJECT_NAME}:entity:playlist-song`);
 log('Loaded playlistSong entities');
