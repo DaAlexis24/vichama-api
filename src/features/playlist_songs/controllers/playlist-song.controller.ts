@@ -2,7 +2,6 @@ import debug from 'debug';
 import { env } from '../../../config/env.ts';
 import type { PlaylistSongsRepo } from '../repo/playlist-song.repo.ts';
 import type { NextFunction, Response, Request } from 'express';
-import { PlaylistSongSchema } from '../entities/playlist-song.entity.ts';
 import { InternalServerError } from '../../../errors/http-error.ts';
 
 const log = debug(`${env.PROJECT_NAME}:controller:playlists-songs`);
@@ -16,16 +15,13 @@ export class PlaylistSongsController {
 
     async addSongToPlaylist(req: Request, res: Response, next: NextFunction) {
         try {
-            const { playlist_id } = req.params;
-            const { song_id } = PlaylistSongSchema.pick({
-                song_id: true,
-            }).parse(req.body);
+            const { playlist_id, song_id } = req.params;
 
             log('Add song %s into playlist %s', song_id, playlist_id);
 
             const playlist = await this.#repo.addSongToPlaylist(
                 playlist_id as string,
-                song_id,
+                song_id as string,
             );
             return res.status(201).json(playlist);
         } catch (error) {

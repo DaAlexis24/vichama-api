@@ -15,7 +15,7 @@ export class PlaylistSongRouter {
         this.#router = Router();
 
         this.#router.post(
-            '/:playlist_id/song',
+            '/:playlist_id/:song_id',
             this.#controller.addSongToPlaylist.bind(this.#controller),
         );
     }
