@@ -19,31 +19,159 @@ export class SongsRouter {
         this.#controller = controller;
         this.#router = Router();
 
+        /**
+         * @openapi
+         * tags:
+         *  - name: Songs
+         *    description: API endpoints for managing songs
+         */
+
+        /**
+         * @openapi
+         *
+         * /api/songs:
+         *   get:
+         *     summary: Retrieve a list of songs
+         *     tags: [Songs]
+         *     responses:
+         *       200:
+         *         description: A list of songs
+         *         content:
+         *           application/json:
+         *             schema:
+         *               type: array
+         *               items:
+         *                 $ref: '#/components/schemas/Song'
+         */
         this.#router.get(
             '/',
             this.#controller.getAllSongs.bind(this.#controller),
         );
+
+        /**
+         * @openapi
+         *
+         * /api/songs/{id}:
+         *   get:
+         *     summary: Retrieve a single song by ID
+         *     tags: [Songs]
+         *     responses:
+         *       200:
+         *         description: A single song
+         *         content:
+         *           application/json:
+         *             schema:
+         *               $ref: '#/components/schemas/Song'
+         *       404:
+         *         description: Song not found
+         *       500:
+         *         description: Server error
+         *
+         */
         this.#router.get(
             '/:id',
             validateId(),
             this.#controller.getSongByID.bind(this.#controller),
         );
-        // this._router.get(
-        //     '/search/:title',
-        //     validateSearch(),
-        //     this.controller.getSongByTitle.bind(this.controller),
-        // );
+
+        /**
+         * @openapi
+         *
+         * /api/songs:
+         *   post:
+         *     summary: Create a new song
+         *     tags: [Songs]
+         *     requestBody:
+         *       required: true
+         *       content:
+         *         application/json:
+         *           schema:
+         *             $ref: '#/components/schemas/SongCreateDTO'
+         *     responses:
+         *       201:
+         *         description: Song created successfully
+         *         content:
+         *           application/json:
+         *             schema:
+         *               $ref: '#/components/schemas/Song'
+         *       400:
+         *         description: Invalid input data
+         *       401:
+         *         description: Missing or invalid token
+         *       500:
+         *         description: Server error
+         */
         this.#router.post(
             '/',
             validateBody(CreateSongSchema),
             this.#controller.createSong.bind(this.#controller),
         );
+
+        /**
+         * @openapi
+         *
+         * /api/songs/{id}:
+         *   patch:
+         *     summary: Update a song (partial)
+         *     tags: [Songs]
+         *     parameters:
+         *       - in: path
+         *         name: id
+         *         required: true
+         *         schema:
+         *           type: char
+         *     requestBody:
+         *       required: true
+         *       content:
+         *         application/json:
+         *           schema:
+         *             $ref: '#/components/schemas/SongUpdateDTO'
+         *     responses:
+         *       200:
+         *         description: Song updated successfully
+         *         content:
+         *           application/json:
+         *             schema:
+         *               $ref: '#/components/schemas/Song'
+         *       400:
+         *         description: Invalid input data
+         *       401:
+         *         description: Missing or invalid token
+         *       404:
+         *         description: Song not found
+         *       500:
+         *         description: Server error
+         */
         this.#router.patch(
             '/:id',
             validateId(),
             validateBody(UpdateSongSchema),
             this.#controller.updateSong.bind(this.#controller),
         );
+
+        /**
+         * @openapi
+         *
+         * /api/songs/{id}:
+         *   delete:
+         *     summary: Delete a song
+         *     tags: [Songs]
+         *     parameters:
+         *       - in: path
+         *         name: id
+         *         required: true
+         *         schema:
+         *           type: char
+         *     responses:
+         *       204:
+         *         description: Song deleted successfully
+         *       401:
+         *         description: Missing or invalid token
+         *       404:
+         *         description: Song not found
+         *       500:
+         *         description: Server error
+         */
         this.#router.delete(
             '/:id',
             validateId(),

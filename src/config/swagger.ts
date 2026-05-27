@@ -13,7 +13,7 @@ const swaggerOptions: Options = {
                 name: 'Daniel Soledad',
                 email: 'danielalsole24@gmail.com',
             },
-            server: [
+            servers: [
                 {
                     url: `http://${env.PGHOST}:${env.PORT}/api`,
                     description: 'Development server',
