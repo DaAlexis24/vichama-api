@@ -18,9 +18,8 @@ export class PlaylistSongsController {
     }
 
     async addSongToPlaylist(req: Request, res: Response, next: NextFunction) {
+        const { playlist_id, song_id } = req.params;
         try {
-            const { playlist_id, song_id } = req.params;
-
             log('Add song %s into playlist %s', song_id, playlist_id);
 
             const playlist = await this.#repo.addSongToPlaylist(
@@ -29,6 +28,23 @@ export class PlaylistSongsController {
             );
             return res.status(201).json(playlist);
         } catch (error) {
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
+                const notFoundError = new NotFoundError(
+                    'Song or playlist requested not found',
+                    {
+                        cause: error,
+                    },
+                );
+                log(
+                    'Error while submitting song to the playlist: %s',
+                    notFoundError.message,
+                );
+                return next(notFoundError);
+            }
+
             const internalError = new InternalServerError(
                 'Failed to add song into playlist',
                 { cause: error },
