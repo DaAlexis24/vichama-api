@@ -18,6 +18,11 @@ export class PlaylistSongRouter {
             '/:playlist_id/:song_id',
             this.#controller.addSongToPlaylist.bind(this.#controller),
         );
+
+        this.#router.delete(
+            '/:playlist_id/:song_id',
+            this.#controller.removeSongToPlaylist.bind(this.#controller),
+        );
     }
 
     get router() {

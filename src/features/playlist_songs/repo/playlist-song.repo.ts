@@ -34,4 +34,15 @@ export class PlaylistSongsRepo {
             data: { playlist_id, song_id },
         })) as PlaylistSong;
     }
+
+    async removeSongToPlaylist(
+        playlist_id: string,
+        song_id: string,
+    ): Promise<PlaylistSong> {
+        return await this.#prisma.playlistSong.delete({
+            where: {
+                playlist_id_song_id: { playlist_id, song_id },
+            },
+        });
+    }
 }
