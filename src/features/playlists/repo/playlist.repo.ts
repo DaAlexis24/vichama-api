@@ -1,6 +1,6 @@
 import debug from 'debug';
-import { PrismaClient } from '../../../../generated/prisma/client.ts';
 import { env } from '../../../config/env.ts';
+import { PrismaClient } from '../../../../generated/prisma/client.ts';
 import type {
     Playlist,
     CreatePlaylistDTO,
@@ -28,6 +28,17 @@ export class PlaylistRepo {
         return (await this.#prisma.playlist.findUniqueOrThrow({
             where: {
                 id,
+            },
+            include: {
+                songs: {
+                    include: {
+                        song: true,
+                    },
+                    omit: {
+                        playlist_id: true,
+                        song_id: true,
+                    },
+                },
             },
         })) as PlaylistWithSongs;
     }

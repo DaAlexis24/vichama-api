@@ -11,4 +11,4 @@ export const PlaylistSongSchema = z.object({
     song_id: uuidSchema,
 });
 
-export type PlaylistSongInput = z.infer<typeof PlaylistSongSchema>;
+export type PlaylistSong = z.infer<typeof PlaylistSongSchema>;
