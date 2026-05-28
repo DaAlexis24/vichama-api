@@ -77,7 +77,7 @@ log('Loaded songs entities');
  *           type: string
  *           example: https://res.cloudinary.com/dtfjsgavh/image/upload/v1776607130/mundaka-eterno.mp3
  *
- *     FilmUpdateDTO:
+ *     SongUpdateDTO:
  *       type: object
  *       additionalProperties: false
  *       description: Partial update payload for a song.
