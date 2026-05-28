@@ -55,6 +55,12 @@ export class SongsRouter {
          *   get:
          *     summary: Retrieve a single song by ID
          *     tags: [Songs]
+         *     parameters:
+         *       - in: path
+         *         name: id
+         *         required: true
+         *         schema:
+         *           type: string
          *     responses:
          *       200:
          *         description: A single song
@@ -119,7 +125,7 @@ export class SongsRouter {
          *         name: id
          *         required: true
          *         schema:
-         *           type: char
+         *           type: string
          *     requestBody:
          *       required: true
          *       content:
@@ -161,7 +167,7 @@ export class SongsRouter {
          *         name: id
          *         required: true
          *         schema:
-         *           type: char
+         *           type: string
          *     responses:
          *       204:
          *         description: Song deleted successfully
