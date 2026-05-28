@@ -34,7 +34,7 @@ export const createApp = (prisma: PrismaClient) => {
     const app = express();
     app.disable('x-powered-by');
     app.use(morgan('dev'));
-    app.use(cors({ origin: '*' }));
+    app.use(cors({ origin: '*', credentials: true }));
     app.use(express.json());
     app.use(express.urlencoded());
     app.use(customHeaders(env.PROJECT_NAME));
