@@ -5,3 +5,10 @@
 h1 {
     color: blue;
 }
+
+.grid-box {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    overflow-x: hidden;
+}
