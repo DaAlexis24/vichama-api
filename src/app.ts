@@ -25,6 +25,7 @@ import { PlaylistRouter } from './features/playlists/routes/playlists.routes.ts'
 import { PlaylistSongsRepo } from './features/playlist_songs/repo/playlist-song.repo.ts';
 import { PlaylistSongsController } from './features/playlist_songs/controllers/playlist-song.controller.ts';
 import { PlaylistSongRouter } from './features/playlist_songs/routes/playlist-song.route.ts';
+import { Layout } from './views/core/layout.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -45,6 +46,10 @@ export const createApp = (prisma: PrismaClient) => {
             status: 'ok',
             timestamp: new Date().toISOString(),
         });
+    });
+
+    app.get('/', (_req, res) => {
+        return res.send(Layout.render());
     });
 
     app.get('/api', apiController);
