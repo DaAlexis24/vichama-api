@@ -1,5 +1,6 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
+import { Header } from './components/header.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app:view`);
 log('Loading app view class...');
@@ -12,6 +13,8 @@ export class Layout {
 
     static #favicon = '/favicon.png';
     static #css = './styles.css';
+
+    static #header = Header.render();
 
     constructor(
         page: string,
@@ -40,9 +43,7 @@ export class Layout {
             </head>
             <body>
                 <div class="grid-box">
-                    <header class="header">
-                        <h1>${this.#page}</h1>
-                    </header>
+                    ${Layout.#header}
                     <main>
                         <section>
                             ${this.#content}
