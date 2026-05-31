@@ -36,6 +36,10 @@
     --border-radius: 0.5rem;
 }
 
+body {
+    background-color: var(--color-back);
+}
+
 .grid-box {
     display: grid;
     grid-template-rows: auto 1fr auto;
