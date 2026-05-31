@@ -13,13 +13,14 @@ export class Header {
             /*html*/
             `<header class="header">
                 <div>
-                    <img src=${this.#logo} alt="Logo Vichama API">
+                    <a href="/">
+                        <img src=${this.#logo} alt="Logo Vichama API">
+                    </a>
                     <p>Vichama API</p>
                 </div>
                 <nav>
                     <li>
-                    
-                        <a href="#">Inicio</a>
+                        <a href="/api/docs">Docs</a>
                     </li>
                     <li>
                         <a href="/sobre-nosotros">Sobre Nosotros</a>

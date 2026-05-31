@@ -1,33 +1,92 @@
-* {
-    box-sizing: border-box;
-}
+@import url('./reset.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Sora:wght@100..800&display=swap');
 
-h1 {
-    color: blue;
+:root {
+    --adobe: #b4613f;
+    --sand-brown: #e3b068;
+    --metallic-blue: #3a6c83;
+    --off-white: #fcf5e4;
+    --black: #000;
+
+    /* Paleta de Colores */
+    --color-back: var(--off-white);
+    --color-font: var(--black);
+
+    --color-primary: var(--adobe);
+    --color-secondary: var(--sand-brown);
+    --color-accent: var(--metallic-blue);
+
+    /* Fuentes */
+    --font-primary: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-label: 'JetBrains Mono', monospace;
+
+    /* Escala */
+    --scala: 1.2;
+    --base: 1rem;
+
+    --size-x-large: calc(var(--size-large) * var(--scala));
+    --size-large: calc(var(--size-medium) * var(--scala));
+    --size-medium: calc(var(--size-normal) * var(--scala));
+    --size-normal: var(--base);
+    --size-small: calc(var(--size-normal) / var(--scala));
+    --size-x-small: calc(var(--size-small) / var(--scala));
+
+    /* Bordes */
+    --border-radius: 0.5rem;
 }
 
 .grid-box {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
 }
 
 .header {
-    padding: 1rem;
-    width: 100%;
+    padding-inline: 2rem;
+    padding-block: 0.5rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    font-family: var(--font-label);
+    font-weight: 800;
+    font-size: var(--size-medium);
 
     div {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
 
         img {
             width: 3rem;
             height: 2rem;
+        }
+    }
+
+    nav {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-around;
+        text-decoration: none;
+        list-style: none;
+        font-family: var(--font-primary);
+        color: var(--off-white);
+        font-weight: 400;
+        font-size: var(--size-normal);
+
+        li {
+            list-style: none;
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: var(--color-secondary);
+            }
         }
     }
 }
