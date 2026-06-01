@@ -5,7 +5,6 @@ const log = debug(`${env.PROJECT_NAME}:header:component:view`);
 log('Loading component header view class...');
 
 export class Header {
-    static selector = 'app-header';
     static #logo = './favicon.png';
 
     static render = (): string => {
