@@ -1,6 +1,7 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import { Layout } from '../core/layout.ts';
+import { Hero } from '../core/components/hero.ts';
 
 const log = debug(`${env.PROJECT_NAME}:home:view`);
 log('Loading home view class...');
@@ -11,8 +12,11 @@ export class Home {
         'Página de inicio de Vichama API, proyecto de música libre';
     static keywords = 'Vichama API, música, playlists';
 
+    static #hero = Hero.render();
+
     static render = (): string => {
         const content = /*html*/ `
+            ${Home.#hero}
             <article class="home-hero">
                 <h2>Bienvenido a Vichama API</h2>
                 <p>Proyecto de música libre — explora canciones y playlists.</p>

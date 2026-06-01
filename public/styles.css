@@ -95,6 +95,42 @@ body {
     }
 }
 
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 3rem;
+}
+
+.heading-group {
+    padding: 2rem;
+    h1 {
+        font-family: var(--font-primary);
+        font-size: 5rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        margin-bottom: 1rem;
+
+        span {
+            color: var(--color-secondary);
+        }
+    }
+    p {
+        font-family: var(--font-body);
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--color-secondary);
+    }
+}
+
+.logo {
+    padding: 2rem;
+    img {
+        width: 99%;
+        height: 99%;
+    }
+}
+
 .footer {
     display: flex;
     align-items: center;
