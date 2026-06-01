@@ -131,6 +131,28 @@ body {
     }
 }
 
+.populate-playlist {
+    padding: 3rem;
+    background-color: var(--color-secondary);
+}
+
+.heading-playlist {
+    margin-bottom: 1.5rem;
+    h2 {
+        font-family: var(--font-primary);
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--color-primary);
+    }
+    p {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--color-accent);
+    }
+}
+
 .footer {
     display: flex;
     align-items: center;
