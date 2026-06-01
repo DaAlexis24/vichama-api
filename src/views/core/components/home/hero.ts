@@ -1,4 +1,4 @@
-import { env } from '../../../config/env.ts';
+import { env } from '../../../../config/env.ts';
 import debug from 'debug';
 
 const log = debug(`${env.PROJECT_NAME}:hero:component:view`);

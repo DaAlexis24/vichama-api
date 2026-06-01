@@ -1,7 +1,7 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import { Layout } from '../core/layout.ts';
-import { Hero } from '../core/components/hero.ts';
+import { Hero } from '../core/components/home/hero.ts';
 
 const log = debug(`${env.PROJECT_NAME}:home:view`);
 log('Loading home view class...');
