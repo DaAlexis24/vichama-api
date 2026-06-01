@@ -1,6 +1,7 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import { Header } from './components/header.ts';
+import { Footer } from './components/footer.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app:view`);
 log('Loading app view class...');
@@ -15,6 +16,7 @@ export class Layout {
     static #css = './styles.css';
 
     static #header = Header.render();
+    static #footer = Footer.render();
 
     constructor(
         page: string,
@@ -49,9 +51,7 @@ export class Layout {
                             ${this.#content}
                         </section>
                     </main>
-                    <footer class="footer">
-                        <p>Curso Desarrollo Web</p>
-                    </footer>
+                    ${Layout.#footer}
                 </div> 
             </body>
             </html>
