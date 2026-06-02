@@ -14,12 +14,14 @@ export class Home {
     static keywords = 'Vichama API, música, playlists';
 
     static #hero = Hero.render();
-    static #populatePlaylist = PopulatePlaylist.render();
 
-    static render = (): string => {
+    static render = async (): Promise<string> => {
+        const heroContent = Home.#hero;
+        const playlistContent = await PopulatePlaylist.render();
+
         const content = /*html*/ `
-            ${Home.#hero}
-            ${Home.#populatePlaylist}
+            ${heroContent}
+            ${playlistContent}
             <article class="home-hero">
                 <section class="features">
                     <h3>Qué puedes hacer</h3>

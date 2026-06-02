@@ -49,8 +49,8 @@ export const createApp = (prisma: PrismaClient) => {
         });
     });
 
-    app.get('/', (_req, res) => {
-        return res.send(Home.render());
+    app.get('/', async (_req, res) => {
+        return res.send(await Home.render());
     });
 
     app.get('/api', apiController);

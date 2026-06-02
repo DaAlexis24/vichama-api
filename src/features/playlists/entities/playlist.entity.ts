@@ -1,7 +1,7 @@
 import z from 'zod';
 import { env } from '../../../config/env.ts';
 import debug from 'debug';
-import { uuidSchema } from '../../entities/index.entity.ts';
+import { urlSchema, uuidSchema } from '../../entities/index.entity.ts';
 import { SongSchema } from '../../songs/entities/song.entities.ts';
 
 const log = debug(`${env.PROJECT_NAME}:entity:playlist`);
@@ -132,6 +132,7 @@ log('Loaded playlist entities');
 export const PlaylistSchema = z.object({
     id: uuidSchema,
     name: z.string().max(255),
+    cover: urlSchema,
     description: z.string().optional(),
     created_at: z.coerce.date(),
     updated_at: z.coerce.date(),
