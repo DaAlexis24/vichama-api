@@ -246,9 +246,64 @@ body {
     font-family: var(--font-label);
     font-size: 500;
     font-size: 1rem;
-    transition: transform 0.2s ease-in-out  ;
+    transition: transform 0.2s ease-in-out;
 }
 
 .playlist-link:hover {
+    transform: scale(1.2);
+}
+
+.features {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-primary);
+
+    h3 {
+        font-family: var(--font-primary);
+        color: var(--off-white);
+        font-weight: 700;
+        font-size: 3rem;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    div {
+        display: flex;
+        padding: 1rem;
+        justify-content: space-around;
+        gap: 2rem;
+    }
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--color-secondary);
+    border-radius: var(--border-radius);
+    transition: transform 0.2s ease-in-out;
+    max-width: 9rem;
+
+    img {
+        width: 36px;
+        height: 36px;
+    }
+
+    p {
+        font-family: var(--font-body);
+        font-weight: 500;
+        color: var(--off-white);
+        font-size: 1rem;
+        text-align: center;
+    }
+}
+
+.feature-card:hover {
     transform: scale(1.2);
 }
