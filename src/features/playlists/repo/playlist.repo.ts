@@ -50,6 +50,7 @@ export class PlaylistRepo {
             data: {
                 name: playlist.name,
                 description: playlist.description,
+                cover: playlist.cover,
             },
         });
         return result as Playlist;
@@ -64,6 +65,7 @@ export class PlaylistRepo {
         if (playlistData.name !== undefined) data.name = playlistData.name;
         if (playlistData.description !== undefined)
             data.description = playlistData.description;
+        if (playlistData.cover != undefined) data.cover = playlistData.cover;
 
         const result = await this.#prisma.playlist.update({
             where: { id },

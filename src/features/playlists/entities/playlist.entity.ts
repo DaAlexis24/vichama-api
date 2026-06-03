@@ -140,7 +140,7 @@ export const PlaylistSchema = z.object({
 
 export const CreatePlaylistSchema = z.object({
     name: z.string().min(1, { message: 'El nombre es obligatorio' }).max(255),
-    cover: z.string(),
+    cover: urlSchema,
     description: z.string().max(1000),
 });
 
