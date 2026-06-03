@@ -307,3 +307,58 @@ body {
 .feature-card:hover {
     transform: scale(1.2);
 }
+
+.hero-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem;
+    background: linear-gradient(var(--color-secondary), var(--off-white));
+
+    h2 {
+        font-family: var(--font-primary);
+        font-weight: 800;
+        font-size: 5rem;
+        color: var(--color-accent);
+        margin-bottom: 1.5rem;
+    }
+
+    p {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--color-font);
+        margin-bottom: 2rem;
+    }
+
+    blockquote {
+        content: '';
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        font-family: var(--font-label);
+        font-weight: 500;
+        font-size: medium;
+        color: var(--color-primary);
+    }
+
+    blockquote::before,
+    blockquote::after {
+        content: '';
+        display: block;
+        text-align: center;
+        width: 5rem;
+        height: 5px;
+        background-color: var(--color-accent);
+        transition: 300ms width ease-in-out;
+    }
+
+    blockquote:hover::before,
+    blockquote:hover::after {
+        width: 100%;
+    }
+}
