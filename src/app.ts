@@ -27,6 +27,7 @@ import { PlaylistSongsController } from './features/playlist_songs/controllers/p
 import { PlaylistSongRouter } from './features/playlist_songs/routes/playlist-song.route.ts';
 
 import { Home } from './views/pages/home.ts';
+import { AboutUs } from './views/pages/about.ts';
 
 const log = debug(`${env.PROJECT_NAME}:app`);
 log('Loading app...');
@@ -51,6 +52,10 @@ export const createApp = (prisma: PrismaClient) => {
 
     app.get('/', async (_req, res) => {
         return res.send(await Home.render());
+    });
+
+    app.get('/sobre-nosotros', async (_req, res) => {
+        return res.send(await AboutUs.render());
     });
 
     app.get('/api', apiController);
