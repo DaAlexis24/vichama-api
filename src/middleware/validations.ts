@@ -28,6 +28,22 @@ export const validateId = (
     };
 };
 
+export const validateParams = (schema: ZodObject) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        log('Validating request params...');
+        try {
+            schema.parse(req.params);
+            log('Params were validated successfully!');
+            return next();
+        } catch (error) {
+            const paramsError = new BadRequestError(`Invalid Request Params`, {
+                cause: error,
+            });
+            return next(paramsError);
+        }
+    };
+};
+
 // export const validateSearch = (
 //     schema: ZodObject = z.object({ title: z.coerce.string() }),
 // ) => {

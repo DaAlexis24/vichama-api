@@ -4,6 +4,7 @@ import type { PlaylistSongsRepo } from '../repo/playlist-song.repo.ts';
 import type { NextFunction, Response, Request } from 'express';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import {
+    ConflictError,
     InternalServerError,
     NotFoundError,
 } from '../../../errors/http-error.ts';
@@ -30,7 +31,7 @@ export class PlaylistSongsController {
         } catch (error) {
             if (
                 error instanceof PrismaClientKnownRequestError &&
-                error.code === 'P2025'
+                (error.code === 'P2025' || error.code === 'P2003')
             ) {
                 const notFoundError = new NotFoundError(
                     'Song or playlist requested not found',
@@ -43,6 +44,21 @@ export class PlaylistSongsController {
                     notFoundError.message,
                 );
                 return next(notFoundError);
+            }
+
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === 'P2002'
+            ) {
+                const conflictError = new ConflictError(
+                    'Song already exists in playlist',
+                    { cause: error },
+                );
+                log(
+                    'Error while submitting song to the playlist: %s',
+                    conflictError.message,
+                );
+                return next(conflictError);
             }
 
             const internalError = new InternalServerError(
@@ -73,7 +89,7 @@ export class PlaylistSongsController {
         } catch (error) {
             if (
                 error instanceof PrismaClientKnownRequestError &&
-                error.code === 'P2025'
+                (error.code === 'P2025' || error.code === 'P2003')
             ) {
                 const notFoundError = new NotFoundError(
                     'Song or playlist requested not found',
