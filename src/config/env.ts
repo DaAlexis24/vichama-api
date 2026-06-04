@@ -1,9 +1,9 @@
-import * as z from "zod";
-import { ZodError } from "zod";
+import * as z from 'zod';
+import { ZodError } from 'zod';
 
 const EnvSchema = z.object({
     PORT: z.coerce.number(),
-    NODE_ENV: z.enum(["dev", "prod", "test"]).default("dev"),
+    NODE_ENV: z.enum(['dev', 'production', 'test']).default('dev'),
     DEBUG: z.string().optional(),
     PROJECT_NAME: z.string(),
     PGUSER: z.string(),

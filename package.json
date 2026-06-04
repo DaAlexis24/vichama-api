@@ -6,9 +6,13 @@
     "author": "daAlexis24",
     "type": "module",
     "main": "index.ts",
+    "engines": {
+        "node": ">=22.18.0"
+    },
     "scripts": {
-        "start": "node ./src/index.ts",
+        "start": "prisma migrate deploy && node ./src/index.ts",
         "dev": "node --watch --env-file=.env ./src/index.ts",
+        "postinstall": "prisma generate",
         "test": "node --env-file=.env.test --test",
         "test:serie": "node --env-file=.env.test --test --test-concurrency=1",
         "seed:test": "node --env-file=.env.test ./src/songs/entities/test-seed-song.ts"
@@ -25,6 +29,7 @@
         "marked": "^18.0.2",
         "morgan": "^1.10.1",
         "pg": "^8.20.0",
+        "prisma": "^7.8.0",
         "swagger-jsdoc": "^6.3.0",
         "swagger-ui-express": "^5.0.1",
         "zod": "^4.3.6"
@@ -41,7 +46,6 @@
         "@types/swagger-ui-express": "^4.1.8",
         "eslint": "^10.2.0",
         "globals": "^17.5.0",
-        "prisma": "^7.8.0",
         "prisma-zod-generator": "^2.1.4",
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.58.2"
