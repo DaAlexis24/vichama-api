@@ -7,13 +7,17 @@ const log = debug(`${env.PROJECT_NAME}:configDB`);
 log('Loaded database connection');
 
 export const connectDB = async (): Promise<PrismaClient> => {
-    const adapter = new PrismaPg({
-        user: env.PGUSER,
-        password: env.PGPASSWORD,
-        host: env.PGHOST,
-        port: env.PGPORT,
-        database: env.PGDATABASE,
-    });
+    const adapter = new PrismaPg(
+        env.DATABASE_URL
+            ? { connectionString: env.DATABASE_URL }
+            : {
+                  user: env.PGUSER,
+                  password: env.PGPASSWORD,
+                  host: env.PGHOST,
+                  port: env.PGPORT,
+                  database: env.PGDATABASE,
+              },
+    );
 
     const prisma = new PrismaClient({
         adapter,
