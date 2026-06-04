@@ -32,7 +32,12 @@ export class PlaylistRepo {
             include: {
                 songs: {
                     include: {
-                        song: true,
+                        song: {
+                            omit: {
+                                created_at: true,
+                                updated_at: true,
+                            },
+                        },
                     },
                     omit: {
                         playlist_id: true,
