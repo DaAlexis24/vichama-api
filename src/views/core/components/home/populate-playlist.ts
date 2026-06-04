@@ -1,25 +1,25 @@
 import { env } from '../../../../config/env.ts';
 import debug from 'debug';
 import { PlaylistRepo } from '../../../../features/playlists/repo/playlist.repo.ts';
-import { connectDB } from '../../../../config/db.ts';
+import type { PrismaClient } from '../../../../../generated/prisma/client.ts';
 
 const log = debug(`${env.PROJECT_NAME}:populate-playlist:component:view`);
 log('Loading component Populate Playlist view class...');
 
-const prisma = await connectDB();
-const repo = new PlaylistRepo(prisma);
-
 export class PopulatePlaylist {
     static #defaultCover = './default-cover.png';
 
-    static render = async (): Promise<string> => {
+    static render = async (prisma: PrismaClient): Promise<string> => {
         log('Fetching playlists from repo...');
+        const repo = new PlaylistRepo(prisma);
         const playlists = await repo.getAllPlaylists();
 
-        const playlistsHtml = playlists
-            .map((playlist) => {
-                const cover = playlist.cover ?? PopulatePlaylist.#defaultCover;
-                return /*html*/ `
+        const playlistsHtml = playlists.length
+            ? playlists
+                  .map((playlist) => {
+                      const cover =
+                          playlist.cover ?? PopulatePlaylist.#defaultCover;
+                      return /*html*/ `
                     <article class="playlist-card">
                         <img src="${cover}" alt="Portada de ${playlist.name}" class="playlist-image">
                         <h3>${playlist.name}</h3>
@@ -31,8 +31,11 @@ export class PopulatePlaylist {
                         <a href="/api/playlists/${playlist.id}" class="playlist-link">Ver más</a>
                     </article>
                 `;
-            })
-            .join('');
+                  })
+                  .join('')
+            : /*html*/ `
+                <p class="playlist-empty">Todavía no hay playlists disponibles.</p>
+            `;
 
         const template =
             /*html*/

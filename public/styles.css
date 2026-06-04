@@ -231,6 +231,14 @@ body {
     }
 }
 
+.playlist-empty {
+    color: var(--off-white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 2rem;
+    text-align: center;
+}
+
 .playlist-image {
     width: 10rem;
     height: 10rem;

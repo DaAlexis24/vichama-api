@@ -1,5 +1,6 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
+import type { PrismaClient } from '../../../generated/prisma/client.ts';
 import { Layout } from '../core/layout.ts';
 import { Hero } from '../core/components/home/hero.ts';
 import { PopulatePlaylist } from '../core/components/home/populate-playlist.ts';
@@ -14,9 +15,9 @@ export class Home {
         'Página de inicio de Vichama API, proyecto de música libre';
     static keywords = 'Vichama API, música, playlists';
 
-    static render = async (): Promise<string> => {
+    static render = async (prisma: PrismaClient): Promise<string> => {
         const heroContent = Hero.render();
-        const playlistContent = await PopulatePlaylist.render();
+        const playlistContent = await PopulatePlaylist.render(prisma);
         const features = Features.render();
 
         const content = /*html*/ `

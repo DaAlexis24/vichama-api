@@ -51,7 +51,7 @@ export const createApp = (prisma: PrismaClient) => {
     });
 
     app.get('/', async (_req, res) => {
-        return res.send(await Home.render());
+        return res.send(await Home.render(prisma));
     });
 
     app.get('/sobre-nosotros', async (_req, res) => {
